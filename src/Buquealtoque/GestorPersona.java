@@ -25,7 +25,7 @@ public class GestorPersona {
 	        System.out.print("Ingrese el tipo de usuario (Cliente/Empleado): ");
 	        String tipo = scanner.nextLine();
 
-	        Persona.agregarUsuario(email, nombre, apellido, dni, password, tipo);
+	        Persona.agregarUsuario(email, nombre, apellido, dni, password, tipo, false);
 	        System.out.println("Usuario registrado con éxito.");
 	    }
 	

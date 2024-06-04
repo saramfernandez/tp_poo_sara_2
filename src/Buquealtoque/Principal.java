@@ -3,11 +3,12 @@ package Buquealtoque;
 import java.util.Scanner;
 
 public class Principal {
+    public static Persona usuarioAutenticado = null;
 
     public static void main(String[] args) {
         while (true) {
             // Iniciar sesión
-            Persona usuarioAutenticado = Login.iniciarSesion();
+            usuarioAutenticado = Login.iniciarSesion();
 
             // Mostrar el menú principal
             mostrarMenuPrincipal(usuarioAutenticado);
@@ -38,7 +39,8 @@ public class Principal {
                     break;
                 case 3:
                     // Lógica para pagar reserva (implementación futura)
-                    System.out.println("Pagar reserva (implementación futura)");
+                    //System.out.println("Pagar reserva (implementación futura)");
+                    GestionarCarrito.pagarCarrito();
                     break;
                 case 4:
                     // Mostrar todos los paquetes
@@ -51,24 +53,34 @@ public class Principal {
                 case 6:
                     // Ver mis reservas
                     //GestorReserva.verMisReservas();
-                    GestionarCompras.gestionarCompras();
+                    GestionarCompras.verCompras();
                     break;
                 case 7:
                     GestorTicketIncidencia.crearTicketIncidencia(usuarioAutenticado.getEmail());
                     break;
     
                 case 8:
+                if(usuarioAutenticado.getTipo().equalsIgnoreCase("Soporte")||usuarioAutenticado.getTipo().equalsIgnoreCase("Administrador")){
                     GestorTicketIncidencia.mostrarTickets();
-                     // Resolver ticket
-                    System.out.println("Seleccione el ticket a resolver (Ingrese ID), elija 0 para salir:");
-                    int idTicket = scanner.nextInt();
-                    scanner.nextLine(); // Limpiar buffer
-                    if (idTicket == 0) {
-                        break;
-                    }
-                    System.out.println("Ingrese la descripción de la resolución:");
-                    String resolucion = scanner.nextLine();
-                    GestorTicketIncidencia.resolverTicket(idTicket, resolucion);
+                    // Resolver ticket
+                   System.out.println("Seleccione el ticket a resolver (Ingrese ID), elija 0 para salir:");
+                   int idTicket = scanner.nextInt();
+                   scanner.nextLine(); // Limpiar buffer
+                   if (idTicket == 0) {
+                       break;
+                   }
+                   System.out.println("Ingrese la descripción de la resolución:");
+                   String resolucion = scanner.nextLine();
+                   GestorTicketIncidencia.resolverTicket(idTicket, resolucion);
+                   break;
+                }
+                else{
+                    System.out.println("El usuario no tiene permisos para esta accion");
+                }
+                break;
+                case 9:
+                    // Reporte de compras
+                    GestionarCompras.generarReporteComprasMes();
                     break;
                 case 0:
                     System.out.println("Cerrando sesión...");

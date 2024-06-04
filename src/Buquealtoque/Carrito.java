@@ -1,19 +1,14 @@
 package Buquealtoque;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class GestionarCarrito extends GestorReserva {
+public class Carrito extends GestorReserva {
     public static List<Object> carritoCompras = new ArrayList<>();
-    public static int agregarCarrito = 1;
-    public static Menu menuCarrito = new Menu();
-    public static Boolean usuarioPremium = false;
-    public static int idCompra = 202401;
 
     public static void gestionarCarrito() {
-        
+        Menu menuCarrito = new Menu();
         menuCarrito.mostrarMenuCarrito();
 
         int opcion = menuCarrito.leerOpcion();
@@ -37,10 +32,6 @@ public class GestionarCarrito extends GestorReserva {
                 pagarCarrito();
                 break;
             case 5:
-                // Volver al menú principal
-                menuCarrito.mostrarMenu();
-                return;
-            case 6:
                 // Limpiar carrito y Salir
                 System.out.println("Saliendo del carrito...");
                 carritoCompras.clear();
@@ -66,21 +57,42 @@ public class GestionarCarrito extends GestorReserva {
             }
         }
 
-        GestionarCompras.detalleCompras(reservas, productos,0,LocalDate.now(),false);
-        System.out.println("Presione Enter para continuar...");
-        scanner.nextLine(); // Espera a que el usuario presione Enter y no salir repentinamente
-        
+        // Mostrar las reservas de viaje
+        if (!reservas.isEmpty()) {
+            System.out.println("Reservas de Viaje:");
+            System.out.printf("%-12s %-10s %-10s %-10s %-10s %-10s\n", "ID", "Buque", "Destino", "Asiento", "Pagado", "Monto");
+            System.out.println("-------------------------------------------------------------------------");
+            for (Reserva reserva : reservas) {
+                String destino = reserva.getDestino() == 1 ? "Argentina" : "Uruguay";
+                String asiento = GestorReserva.convertirAsiento(reserva.getFila(), reserva.getColumna());
+                String pagado = reserva.isPagada() ? "Sí" : "No";
+                Buque buque = GestorReserva.encontrarBuque(reserva.getBuqueId());
+                double montoBuque = buque != null ? buque.getMonto() : 0.0;
+                System.out.printf("%-12d %-10s %-10s %-10s %-10s %-10.2f\n", reserva.getId(), reserva.getBuqueId(), destino, asiento, pagado, montoBuque);
+            }
+        } else {
+            System.out.println("No hay reservas de viaje en el carrito.");
+        }
+
+        // Mostrar los productos de experiencias
+        if (!productos.isEmpty()) {
+            System.out.println("\nProductos de Experiencias:");
+            System.out.printf("%-12s %-30s %-10s\n", "ID", "Descripción", "Valor");
+            System.out.println("------------------------------------------------------------");
+            for (Producto producto : productos) {
+                System.out.printf("%-12d %-30s %-10.2f\n", producto.getId(), producto.getDescripcion(), producto.getValor());
+            }
+        } else {
+            System.out.println("\nNo hay productos de experiencias en el carrito.");
+        }
     }
 
-    public static void pagarCarrito() {
-        
-        usuarioPremium = Principal.usuarioAutenticado.getPremium();
-
+    private static void pagarCarrito() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Seleccione el método de pago:");
         System.out.println("1. Tarjeta de crédito");
         System.out.println("2. MercadoPago");
-        List<Object> compraPaga = new ArrayList<>();
+
         int opcionPago = scanner.nextInt();
         scanner.nextLine(); // Consumir el salto de línea pendiente
 
@@ -108,17 +120,8 @@ public class GestionarCarrito extends GestorReserva {
                 return;
         }
 
-        
         double totalMonto = calcularTotalCarrito();
-        if (usuarioPremium == true) {
-            System.out.println("\n---Usted es un usuario premium, por lo tanto tiene un 15% de descuento en su compra---\n");
-            totalMonto = totalMonto - (totalMonto * 0.15);
-
-        }
         metodoPago.realizarPago(totalMonto);
-        compraPaga.addAll(carritoCompras);
-        GestionarCompras.compras.add(new Compras(idCompra, compraPaga));
-        idCompra++;
 
         // Marcar las reservas como pagadas
         for (Object item : carritoCompras) {
@@ -127,14 +130,13 @@ public class GestionarCarrito extends GestorReserva {
             }
         }
 
-        System.out.println("Pago realizado con éxito. Gracias por su compra."); 
-        
+        System.out.println("Pago realizado con éxito. Gracias por su compra.");
         carritoCompras.clear();
     }
 
     private static double calcularTotalCarrito() {
         double total = 0.0;
-        
+
         for (Object item : carritoCompras) {
             if (item instanceof Reserva) {
                 Reserva reserva = (Reserva) item;
@@ -146,13 +148,6 @@ public class GestionarCarrito extends GestorReserva {
             }
         }
 
-        if (total >= 100000) {
-            Principal.usuarioAutenticado.setPremium(true);// Aplicar descuento del 10% si el total supera los 100 mil
-        }else{
-            Principal.usuarioAutenticado.setPremium(false);
-        }
         return total;
     }
-
-
 }

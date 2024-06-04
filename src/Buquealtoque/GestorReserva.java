@@ -66,7 +66,10 @@ public class GestorReserva {
         }
     }
 
-    public static void verMisReservas() {
+
+    //Esto ya quedo Viejo, no se usa mas
+
+    /*public static void verMisReservas() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Ingrese su DNI para ver sus reservas:");
         String dni = scanner.nextLine();
@@ -100,7 +103,7 @@ public class GestorReserva {
         if (!found) {
             System.out.println("No hay reservas para este DNI.");
         }
-    }
+    }*/
 
 
     public static String convertirAsiento(int fila, int columna) {

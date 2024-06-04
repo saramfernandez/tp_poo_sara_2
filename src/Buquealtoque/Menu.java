@@ -12,6 +12,7 @@ public class Menu {
         System.out.println("[6] Ver mis compras");
         System.out.println("[7] Carga de ticket");
         System.out.println("[8] Mostrar ticket");
+        System.out.println("[9] Reporte compras");
         System.out.println("[0] Salir\n");
         System.out.println("Ingrese la opción deseada:");
     }
@@ -23,6 +24,7 @@ public class Menu {
         System.out.println("[4] Pagar");
         System.out.println("[5] Volver al menú principal");
         System.out.println("[6] Limpiar carrito y Salir\n");
+        
         System.out.println("Ingrese la opción deseada:");
     }
 
@@ -33,6 +35,7 @@ public class Menu {
         System.out.println("[4] Volver al menú principal");
         System.out.println("Ingrese la opción deseada:");
     }
+
 
     public int leerOpcion() {
         Scanner opcion = new Scanner(System.in);

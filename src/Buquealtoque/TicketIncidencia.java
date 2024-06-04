@@ -14,7 +14,7 @@ public class TicketIncidencia {
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.estado = "Pendiente"; // Estado predeterminado
-        this.resolucion = ""; // Inicializar la resolución como vacía
+        this.resolucion = ""; 
     }
 
     // Getters y setters

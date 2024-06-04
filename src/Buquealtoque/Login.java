@@ -5,10 +5,11 @@ import java.io.Console;
 
 public class Login {
 	Console consola = null;
-	
+	public static Persona usuarioAutenticado = null;
+
     public static Persona iniciarSesion() {
         Scanner scanner = new Scanner(System.in);
-        Persona usuarioAutenticado = null;
+        
     	System.out.println("+---------------------------+");
     	System.out.println("|                           |");
     	System.out.println("|    BUQUE AL TOQUE S.A.    |");
@@ -30,7 +31,6 @@ public class Login {
                 System.out.println("\nBienvenido, " + usuarioAutenticado.getNombre() + " " + usuarioAutenticado.getApellido() + "!! \t\t[" + usuarioAutenticado.getTipo() + "]");
             }
         }
-
         return usuarioAutenticado;
     }
 

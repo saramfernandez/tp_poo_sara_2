@@ -5,7 +5,7 @@ public class Reserva {
     private String buqueId;
     private int fila;
     private int columna;
-    private static int contadorReservas = 00100; // Contador para generar IDs únicos
+    private static int contadorReservas = 500; // Contador para generar IDs únicos
     private int id;
     private boolean pagada;
     private int destino;
